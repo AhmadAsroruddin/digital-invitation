@@ -15,3 +15,19 @@ export enum GuestGroupType {
   GroomFamily = 'GroomFamily'
 }
 
+export interface Event {
+  id: number;
+  name: string;
+  brideFamily?: string;
+  groomFamily?: string;
+  subEvents?: {
+    id: number;
+    name: string;
+  }[];
+}
+
+export interface Guest {
+  id: number;
+  name: string;
+  invitedBy: string;
+}
