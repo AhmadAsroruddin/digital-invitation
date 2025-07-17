@@ -6,14 +6,11 @@ import { fetchEventById, fetchGuestsByEventId } from '../services/configService'
 import { GuestlistConfig } from '../types/types';
 
 const columnOptions = [
-  { label: 'Name', value: 'name' },
-  { label: 'Phone', value: 'phone' },
-  { label: 'Address', value: 'address' },
-  { label: 'Guest Group', value: 'guestGroup' },
-  { label: 'Invited By', value: 'invitedBy' },
-  { label: 'Sub Event', value: 'subEvent' },
-  { label: 'RSVP', value: 'rsvp' },
-  { label: 'Check In Time', value: 'checkInTime' },
+  { label: 'Name', value: 'Name' },
+  { label: 'Phone', value: 'Phone' },
+  { label: 'RSVP Status', value: 'RSVP' },
+  { label: 'Guest Group', value: 'GuestGroup' },
+  { label: 'Invited By', value: 'InvitedBy' },
 ];
 
 const EditGuestlistConfig = () => {
@@ -67,7 +64,7 @@ const EditGuestlistConfig = () => {
       columnOptions={columnOptions}
       onSubmit={handleSubmit}
       onBack={() => navigate(-1)}
-      isEdit
+      isEdit={true}
     />
   );
 };
