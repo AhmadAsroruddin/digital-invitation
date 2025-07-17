@@ -48,7 +48,7 @@ const IndexGuestlistConfigPage = () => {
 
     const columns: TableColumn<GuestlistConfig>[] = [
         {
-        name: 'Nama',
+        name: 'Name',
         selector: row => row.name,
         sortable: true,
         },
@@ -58,7 +58,7 @@ const IndexGuestlistConfigPage = () => {
         sortable: true,
         })),
         {
-        name: 'Aksi',
+        name: 'Action',
         cell: row => (
             <div className="flex gap-2">
             <button
@@ -98,7 +98,7 @@ const IndexGuestlistConfigPage = () => {
                     onClick={() => navigate(`/guestlist-config/event/${eventId}/create`)}
                     className="px-4 py-2 bg-cyan-600 text-white rounded hover:bg-cyan-700 transition"
                 >
-                    + Buat Baru
+                    + Create New
                 </button>
                 </div>
 

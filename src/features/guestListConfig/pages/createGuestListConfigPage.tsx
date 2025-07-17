@@ -24,7 +24,7 @@ const CreateGuestlistConfig = () => {
     id: null,
     eventId: Number(eventId),
     name: '',
-    filterJson: { SubEvent: '', Rspv: '', GuestGroup: '', InvitedBy: '' },
+    filterJson: { SubEvent: '', RSVP: '', GuestGroup: '', InvitedBy: '' },
     columnsJson: [],
   });
 

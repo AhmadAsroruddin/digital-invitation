@@ -4,7 +4,7 @@ export interface GuestlistConfig {
   name: string;
   filterJson: {
     SubEvent?: string;
-    Rspv?: string;
+    RSVP?: string;
     InvitedBy?: string;
     GuestGroup?: string;
   };

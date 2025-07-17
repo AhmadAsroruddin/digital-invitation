@@ -38,7 +38,7 @@ const GuestlistConfigForm = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    if (['SubEvent', 'Rspv', 'InvitedBy', 'GuestGroup'].includes(name)) {
+    if (['SubEvent', 'RSVP', 'InvitedBy', 'GuestGroup'].includes(name)) {
       setForm((prev) => ({
         ...prev,
         filterJson: { ...prev.filterJson, [name]: value },
@@ -111,15 +111,15 @@ const GuestlistConfigForm = ({
           <div>
             <label className="block mb-1 text-sm font-medium text-gray-700">RSVP</label>
             <select
-              name="Rspv"
-              value={form.filterJson?.Rspv || ''}
+              name="RSVP"
+              value={form.filterJson?.RSVP || ''}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded px-3 py-2"
             >
               <option value="">-- No Filter Applied --</option>
               <option value="all">All RSVP</option>
-              <option value="attending">Attendance</option>
-              <option value="not attending">Not Attendance</option>
+              <option value="attending">Attending</option>
+              <option value="not attending">Not Attending</option>
             </select>
           </div>
 
