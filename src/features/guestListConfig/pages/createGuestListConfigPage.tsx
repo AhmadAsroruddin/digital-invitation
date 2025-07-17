@@ -1,21 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { GuestlistConfig } from '../types/types';
 import { createGuestlistConfig } from '../services/api';
-import { fetchEvents, fetchEventById, fetchGuestsByEventId } from '../services/eventService';
-
-// Types
-interface Event {
-  id: number;
-  name: string;
-  brideFamily?: string;
-  groomFamily?: string;
-}
-
-interface Guest {
-  id: number;
-  name: string;
-  invitedBy: string;
-}
+import { fetchEventById, fetchGuestsByEventId } from '../services/eventService';
 
 const columnOptions = [
   { label: 'Name', value: 'Name' },
@@ -26,110 +13,82 @@ const columnOptions = [
 ];
 
 const GuestlistConfigForm = () => {
-  const [events, setEvents] = useState<Event[]>([]);
-  const [guests, setGuests] = useState<Guest[]>([]);
+  const { eventId } = useParams<{ eventId: string }>();
+  const [guests, setGuests] = useState<any[]>([]);
   const [brideFamily, setBrideFamily] = useState('');
   const [groomFamily, setGroomFamily] = useState('');
   const [subEvents, setSubEvents] = useState<{ id: number; name: string }[]>([]);
+  
+  const navigate = useNavigate();
+  const [form, setForm] = useState<GuestlistConfig>({
+    id: null,
+    eventId: Number(eventId),
+    name: '',
+    filterJson: { SubEvent: '', Rspv: '', GuestGroup: '', InvitedBy: '' },
+    columnsJson: [],
+  });
 
-    const [form, setForm] = useState<GuestlistConfig>({
-        eventId: 0,
-        name: '',
-        filterJson: { SubEvent: '', Rspv: '', GuestGroup: '', InvitedBy: '' },
-        columnsJson: [],
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    if (['SubEvent', 'Rspv', 'InvitedBy', 'GuestGroup'].includes(name)) {
+      setForm((prev) => ({
+        ...prev,
+        filterJson: { ...prev.filterJson, [name]: value },
+      }));
+    } else if (name === 'columnsJson') {
+      const columns = value.split(',').map((col) => col.trim());
+      setForm((prev) => ({ ...prev, columnsJson: columns }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
+  };
 
-    // Handlers
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        if (['SubEvent', 'Rspv', 'InvitedBy', 'GuestGroup'].includes(name)) {
-        setForm((prev) => ({
-            ...prev,
-            filterJson: { ...prev.filterJson, [name]: value },
-        }));
-        } else if (name === 'columnsJson') {
-        const columns = value.split(',').map((col) => col.trim());
-        setForm((prev) => ({ ...prev, columnsJson: columns }));
-        } else {
-        setForm((prev) => ({ ...prev, [name]: value }));
-        }
+  const handleBack = () => {
+    navigate('/guestlist-config/event/'+eventId)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await createGuestlistConfig(form);
+      
+      alert('Guestlist Configuration Created');
+      navigate('/guestlist-config/event/'+eventId)
+    } catch (err) {
+      alert('Failed to create guestlist configuration');
+    }
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      if (!eventId) return;
+
+      try {
+        const event = await fetchEventById(Number(eventId));
+        setBrideFamily(event.brideFamily || '');
+        setGroomFamily(event.groomFamily || '');
+        setSubEvents(event.subEvents || []);
+      } catch (error) {
+        console.error('Error fetching event details:', error);
+      }
+
+      try {
+        const data = await fetchGuestsByEventId(Number(eventId));
+        setGuests(data);
+      } catch (error) {
+        console.error('Error fetching guests:', error);
+      }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-        const response = await createGuestlistConfig(form);
-        console.log('Created:', response);
-        alert('Guestlist Configuration Created');
-        } catch (err) {
-        alert('Failed to create guestlist configuration');
-        }
-    };
-
-    useEffect(() => {
-        const loadEvents = async () => {
-            try {
-            const data = await fetchEvents();
-            setEvents(data);
-            } catch (error) {
-            console.error('Error fetching events:', error);
-            }
-        };
-
-        loadEvents();
-    }, []);
-
-    useEffect(() => {
-        const loadEventDetails = async () => {
-            if (!form.eventId) return;
-            try {
-            const event = await fetchEventById(form.eventId);
-            setBrideFamily(event.brideFamily || '');
-            setGroomFamily(event.groomFamily || '');
-            setSubEvents(event.subEvents || []);
-            } catch (error) {
-            console.error('Error fetching event details:', error);
-            }
-        };
-
-        const loadGuests = async () => {
-            if (!form.eventId) return;
-            try {
-            const data = await fetchGuestsByEventId(form.eventId);
-            setGuests(data);
-            } catch (error) {
-            console.error('Error fetching guests:', error);
-            }
-        };
-
-        loadEventDetails();
-        loadGuests();
-    }, [form.eventId]);
+    loadData();
+  }, [eventId]);
 
   const invitedByList = Array.from(new Set(guests.map((g) => g.invitedBy).filter(Boolean)));
 
-  // Render
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-200 to-blue-300 p-4">
       <form onSubmit={handleSubmit} className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 sm:p-10 space-y-6">
         <h2 className="text-2xl font-bold text-cyan-700 text-center">Create Guestlist Configuration</h2>
-
-        {/* Event Selector */}
-        <div>
-          <label className="block mb-1 text-sm font-medium text-gray-700">Choose Event</label>
-          <select
-            name="eventId"
-            value={form.eventId}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            required
-          >
-            <option value="">-- Choose Event --</option>
-            {events.map((event) => (
-              <option key={event.id} value={event.id}>{event.name}</option>
-            ))}
-          </select>
-        </div>
 
         {/* Sub Event Selector */}
         <div>
@@ -240,13 +199,21 @@ const GuestlistConfigForm = () => {
           </div>
         </div>
 
-        {/* Submit */}
-        <button
-          type="submit"
-          className="w-full py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded transition-all"
-        >
-          Save Configuration
-        </button>
+        <div className='flex gap-5'>
+          <button
+            type="submit"
+            className="w-full py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded transition-all"
+          >
+            Save Configuration
+          </button>
+          <button
+            type="submit"
+            onClick={handleBack}
+            className="w-full py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold rounded transition-all"
+          >
+            Back
+          </button>
+        </div>
       </form>
     </div>
   );
