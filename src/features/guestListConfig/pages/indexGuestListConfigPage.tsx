@@ -35,8 +35,8 @@ const IndexGuestlistConfigPage = () => {
         if (!confirmDelete) return;
 
         try {
-        await deleteConfigById(id);
-        await loadConfigs();
+            await deleteConfigById(id);
+            await loadConfigs();
         } catch {
         alert('Gagal menghapus konfigurasi.');
         }
