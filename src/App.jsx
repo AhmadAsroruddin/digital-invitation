@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+import EventSelectionPage from './features/event/pages/eventSelectionPage';
 import GuestListConfigPage from './features/guestListConfig/pages/guestListConfigPage';
 
 const App = () => {
@@ -7,7 +8,8 @@ const App = () => {
     <BrowserRouter>
       <div className='min-h-screen min-w-full bg-gray-100'>
         <Routes>
-          <Route path='/' element={<Navigate to='/guestlist-config/create' replace />} />
+          <Route path='/' element={<Navigate to='/event-selection' replace />} />
+          <Route path='/event-selection' element={<EventSelectionPage />} />
           <Route path='/guestlist-config/create' element={<GuestListConfigPage />} />
         </Routes>
       </div>
