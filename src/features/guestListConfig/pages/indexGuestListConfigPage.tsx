@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import { GuestlistConfig } from '../types/types';
-import { fetchConfigsByEventId, deleteConfigById } from '../services/api';
+import { fetchConfigsByEventId, deleteConfigById } from '../services/guestlistConfigService';
 
 const filterKeys = ['SubEvent', 'RSVP', 'InvitedBy', 'GuestGroup'];
 
@@ -45,7 +45,6 @@ const IndexGuestlistConfigPage = () => {
     const filteredConfigs = configs.filter((config) =>
         config.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
 
     const columns: TableColumn<GuestlistConfig>[] = [
         {

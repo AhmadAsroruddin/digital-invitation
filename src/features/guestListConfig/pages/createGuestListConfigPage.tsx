@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GuestlistConfig } from '../types/types';
-import { createGuestlistConfig } from '../services/api';
-import { fetchEventById, fetchGuestsByEventId } from '../services/eventService';
+import { createGuestlistConfig } from '../services/guestlistConfigService';
+import { fetchEventById, fetchGuestsByEventId } from '../services/configService';
 
-const columnOptions = [
-  { label: 'Name', value: 'Name' },
-  { label: 'Phone', value: 'Phone' },
-  { label: 'RSVP Status', value: 'RSVP' },
-  { label: 'Guest Group', value: 'GuestGroup' },
-  { label: 'Invited By', value: 'InvitedBy' },
-];
 
 const GuestlistConfigForm = () => {
+  const columnOptions = [
+    { label: 'Name', value: 'Name' },
+    { label: 'Phone', value: 'Phone' },
+    { label: 'RSVP Status', value: 'RSVP' },
+    { label: 'Guest Group', value: 'GuestGroup' },
+    { label: 'Invited By', value: 'InvitedBy' },
+  ];
+  const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
   const [guests, setGuests] = useState<any[]>([]);
   const [brideFamily, setBrideFamily] = useState('');
   const [groomFamily, setGroomFamily] = useState('');
   const [subEvents, setSubEvents] = useState<{ id: number; name: string }[]>([]);
-  
-  const navigate = useNavigate();
+
   const [form, setForm] = useState<GuestlistConfig>({
     id: null,
     eventId: Number(eventId),

@@ -1,6 +1,4 @@
-// src/services/eventService.ts
-
-import { Event, Guest } from '../types/types';
+import { Event, Guest, GuestlistConfig } from '../types/types';
 import { API_BASE_URL } from './config';
 
 export async function fetchEvents(): Promise<Event[]> {

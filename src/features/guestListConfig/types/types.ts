@@ -1,5 +1,5 @@
 export interface GuestlistConfig {
-  id: number,
+  id?: number,
   eventId: number;
   name: string;
   filterJson: {
