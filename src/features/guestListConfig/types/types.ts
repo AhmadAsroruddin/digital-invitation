@@ -1,6 +1,7 @@
 export interface GuestlistConfig {
   id?: number,
-  eventId: number;
+  eventId?: number,
+  subEventId?: number,
   name: string;
   filterJson: {
     SubEvent?: string;
@@ -28,7 +29,19 @@ export interface Event {
 }
 
 export interface Guest {
+  guestId: number;
+  name: string;
+  phone: string;
+  guestGroup: string;
+  invitedBy: string;
+  subEvents: SubEvent[];
+  rsvPs: any[]; // Atur jika kamu punya detail RSVP
+}
+
+export interface SubEvent {
   id: number;
   name: string;
-  invitedBy: string;
+  startTime: string;
+  endTime: string;
+  location: string;
 }

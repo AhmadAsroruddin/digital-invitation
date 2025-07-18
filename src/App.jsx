@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import EventSelectionPage from './features/event/pages/eventSelectionPage';
 import CreateGuestlistConfig from './features/guestListConfig/pages/CreateGuestListConfigPage';
 import EditGuestlistConfig from './features/guestListConfig/pages/EditGuestlistConfigPage';
+import GuestListViewPage from './features/guestListConfig/pages/GuestListPage';
 import IndexGuestlistConfigPage from './features/guestListConfig/pages/IndexGuestListConfigPage';
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
             path='/guestlist-config/event/:eventId/edit/:id'
             element={<EditGuestlistConfig />}
           />
+          <Route path='/guest-list/:shareCode' element={<GuestListViewPage />} />
         </Routes>
       </div>
     </BrowserRouter>

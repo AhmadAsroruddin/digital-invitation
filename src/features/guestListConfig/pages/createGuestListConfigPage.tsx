@@ -12,6 +12,8 @@ const CreateGuestlistConfig = () => {
     { label: 'RSVP Status', value: 'RSVP' },
     { label: 'Guest Group', value: 'GuestGroup' },
     { label: 'Invited By', value: 'InvitedBy' },
+    { label: 'Confirmed Pax', value: 'ConfirmedPax' },
+    { label: 'Checkin Status', value: 'Checkin' },
   ];
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
@@ -22,33 +24,18 @@ const CreateGuestlistConfig = () => {
 
   const [form, setForm] = useState<GuestlistConfig>({
     id: null,
-    eventId: Number(eventId),
+    subEventId: null,
     name: '',
     filterJson: { SubEvent: '', RSVP: '', GuestGroup: '', InvitedBy: '' },
     columnsJson: [],
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    if (['SubEvent', 'Rspv', 'InvitedBy', 'GuestGroup'].includes(name)) {
-      setForm((prev) => ({
-        ...prev,
-        filterJson: { ...prev.filterJson, [name]: value },
-      }));
-    } else if (name === 'columnsJson') {
-      const columns = value.split(',').map((col) => col.trim());
-      setForm((prev) => ({ ...prev, columnsJson: columns }));
-    } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
-  const handleBack = () => {
-    navigate('/guestlist-config/event/'+eventId)
-  }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.subEventId) {
+      alert('Please select a Sub Event first');
+      return;
+    }
     try {
       const response = await createGuestlistConfig(form);
       

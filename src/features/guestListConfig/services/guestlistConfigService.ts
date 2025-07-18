@@ -3,6 +3,7 @@ import { api } from './api';
 
 // Create
 export const createGuestlistConfig = async (data: GuestlistConfig) => {
+  console.log(data)
   const response = await api.post('/guestlist-config', data);
   return response.data;
 };
@@ -24,6 +25,16 @@ export const fetchConfigsByEventId = async (eventId: number): Promise<GuestlistC
 };
 
 // Get single config by id
+export const fetchGuestlistConfigByShareCode = async (shareCode: string): Promise<GuestlistConfig> => {
+  const response = await api.get(`/guest-list/${shareCode}`);
+  const data = response.data.data;
+
+  return {
+    ...data,
+    filterJson: data.filterJson ? JSON.parse(data.filterJson) : {},
+    columnsJson: data.columnsJson ? JSON.parse(data.columnsJson) : [],
+  };
+};
 export const fetchGuestlistConfigById = async (id: number): Promise<GuestlistConfig> => {
   const response = await api.get(`/guestlist-config/${id}`);
   const data = response.data.data;

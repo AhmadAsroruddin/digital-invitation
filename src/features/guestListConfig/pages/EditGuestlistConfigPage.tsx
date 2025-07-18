@@ -11,12 +11,14 @@ const columnOptions = [
   { label: 'RSVP Status', value: 'RSVP' },
   { label: 'Guest Group', value: 'GuestGroup' },
   { label: 'Invited By', value: 'InvitedBy' },
+  { label: 'Confirmed Pax', value: 'ConfirmedPax' },
+  { label: 'Checkin Status', value: 'Checkin' },
 ];
 
 const EditGuestlistConfig = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  console.log(id)
   const [form, setForm] = useState<GuestlistConfig | null>(null);
   const [subEvents, setSubEvents] = useState<{ id: number; name: string }[]>([]);
   const [invitedByList, setInvitedByList] = useState<string[]>([]);
@@ -28,6 +30,7 @@ const EditGuestlistConfig = () => {
 
     const load = async () => {
       const config = await fetchGuestlistConfigById(Number(id));
+      console.log(config)
       setForm(config);
 
       const event = await fetchEventById(config.eventId);

@@ -38,7 +38,7 @@ const GuestlistConfigForm = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    if (['SubEvent', 'RSVP', 'InvitedBy', 'GuestGroup'].includes(name)) {
+    if (['RSVP', 'InvitedBy', 'GuestGroup'].includes(name)) {
       setForm((prev) => ({
         ...prev,
         filterJson: { ...prev.filterJson, [name]: value },
@@ -46,6 +46,9 @@ const GuestlistConfigForm = ({
     } else if (name === 'columnsJson') {
       const columns = value.split(',').map((col) => col.trim());
       setForm((prev) => ({ ...prev, columnsJson: columns }));
+    } else if (name === 'subEventId') {
+      console.log(value)
+      setForm((prev) => ({ ...prev, subEventId: Number(value) }));
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
     }
@@ -62,12 +65,12 @@ const GuestlistConfigForm = ({
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700">Choose Sub Event</label>
           <select
-            name="SubEvent"
-            value={form.filterJson?.SubEvent || ''}
+            name="subEventId"
+            value={form.subEventId || ''}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
           >
-            <option value="">-- Choose All Sub Event --</option>
+            <option value="">Pilih Sub Event</option> {/* Default placeholder */}
             {subEvents?.map((sub) => (
               <option key={sub.id} value={sub.id}>{sub.name}</option>
             ))}
