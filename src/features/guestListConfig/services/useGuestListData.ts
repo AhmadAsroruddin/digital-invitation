@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchGuestlistConfigByShareCode } from '../services/guestlistConfigService';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
-import { API_BASE_URL } from './config';
+import { SIGNALR_URL } from './config';
 
 
 export const useGuestlistData = () => {
@@ -30,10 +30,10 @@ export const useGuestlistData = () => {
   }, [fetchData]);
 
   useEffect(() => {
-    if (!guestlistData?.event?.id) return;
-
+    if (!guestlistData?.filterJson?.SubEvent) return;
+    const subEventId = guestlistData?.filterJson?.SubEvent;
     const connection = new HubConnectionBuilder()
-      .withUrl(`http://localhost:5000/guestListHub`)
+      .withUrl(`${SIGNALR_URL}/guestListHub`)
       .configureLogging(LogLevel.Information)
       .withAutomaticReconnect()
       .build();
@@ -43,11 +43,11 @@ export const useGuestlistData = () => {
     connection.start()
       .then(() => {
         if (!isMounted) return;
-        connection.invoke("JoinGroup", `event_${guestlistData.event.id}`);
-        connection.invoke("TriggerManual");
+        connection.invoke("JoinGroup", `event_${subEventId}`);
+        console.log(subEventId)
 
-        connection.on("RSVPUpdated", (data) => {
-          console.log("[SignalR] RSVPUpdated received", data);
+        connection.on("EventEntityChanged", (data) => {
+          console.log("[SignalR] Update received", data);
           fetchData();
         });
       })
@@ -58,7 +58,7 @@ export const useGuestlistData = () => {
 
     return () => {
       isMounted = false;
-      connection.off("RSVPUpdated");
+      connection.off("EventEntityChanged");
       connection.stop();
     };
   }, [guestlistData?.event?.id, fetchData]);

@@ -2,14 +2,15 @@ export interface GuestlistConfig {
   id?: number,
   eventId?: number,
   subEventId?: number,
-  name: string;
+  name: string,
   filterJson: {
-    SubEvent?: string;
-    RSVP?: string;
-    InvitedBy?: string;
-    GuestGroup?: string;
-  };
-  columnsJson: string[];
+    SubEvent?: string,
+    RSVP?: string,
+    InvitedBy?: string,
+    GuestGroup?: string
+  },
+  columnsJson: string[],
+  shareCode: string
 }
 
 export enum GuestGroupType {

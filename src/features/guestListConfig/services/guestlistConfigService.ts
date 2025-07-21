@@ -28,7 +28,6 @@ export const fetchConfigsByEventId = async (eventId: number): Promise<GuestlistC
 export const fetchGuestlistConfigByShareCode = async (shareCode: string): Promise<GuestlistConfig> => {
   const response = await api.get(`/guest-list/${shareCode}`);
   const data = response.data.data;
-
   return {
     ...data,
     filterJson: data.filterJson ? JSON.parse(data.filterJson) : {},

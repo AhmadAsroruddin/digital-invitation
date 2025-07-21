@@ -53,31 +53,47 @@ const IndexGuestlistConfigPage = () => {
         sortable: true,
         },
         ...filterKeys.map(key => ({
-        name: key,
-        selector: (row: GuestlistConfig) => row.filterJson?.[key] ?? '-',
-        sortable: true,
+            name: key,
+            selector: (row: GuestlistConfig) => row.filterJson?.[key] ?? '-',
+            sortable: true,
         })),
         {
-        name: 'Action',
-        cell: row => (
-            <div className="flex gap-2">
-            <button
-                onClick={() => navigate(`/guestlist-config/event/${eventId}/edit/${row.id}`)}
-                className="text-blue-600 hover:underline text-sm"
-            >
-                Edit
-            </button>
-            <button
-                onClick={() => handleDelete(row.id!)}
-                className="text-red-500 hover:underline text-sm"
-            >
-                Hapus
-            </button>
-            </div>
-        ),
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
+            name: 'Guest List Link',
+            cell: row => (
+                <a
+                href={`/guest-list/${row.shareCode}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cyan-700 hover:underline text-sm"
+                >
+                Open
+                </a>
+            ),
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+        },
+        {
+            name: 'Action',
+            cell: row => (
+                <div className="flex gap-2">
+                <button
+                    onClick={() => navigate(`/guestlist-config/event/${eventId}/edit/${row.id}`)}
+                    className="text-blue-600 hover:underline text-sm"
+                >
+                    Edit
+                </button>
+                <button
+                    onClick={() => handleDelete(row.id!)}
+                    className="text-red-500 hover:underline text-sm"
+                >
+                    Delete
+                </button>
+                </div>
+            ),
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
         },
     ];
 

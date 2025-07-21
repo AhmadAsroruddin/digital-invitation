@@ -11,9 +11,9 @@ const GuestListViewPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-200 to-blue-300 p-4">
       <div className="max-w-6xl mx-auto bg-white shadow rounded-lg p-6 space-y-6">
-        <h1 className="text-xl font-bold text-gray-800">Guestlist View</h1>
+        <h1 className="text-xl font-bold text-gray-800">{ guestlistData.configurationName }</h1>
 
-        {guestlistData && <GuestEventInfo event={guestlistData.event} />}
+        {guestlistData && <GuestEventInfo event={guestlistData.event} subEvent={guestlistData.subEvent} />}
         {error && <p className="text-red-500">{error}</p>}
 
         <DataTable
