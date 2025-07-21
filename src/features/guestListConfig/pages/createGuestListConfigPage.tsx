@@ -26,6 +26,7 @@ const CreateGuestlistConfig = () => {
     id: null,
     subEventId: null,
     name: '',
+    shareCode: '',
     filterJson: { SubEvent: '', RSVP: '', GuestGroup: '', InvitedBy: '' },
     columnsJson: [],
   });
@@ -71,6 +72,7 @@ const CreateGuestlistConfig = () => {
   }, [eventId]);
 
   const invitedByList = Array.from(new Set(guests.map((g) => g.invitedBy).filter(Boolean)));
+  const groupFamily = Array.from(new Set(guests.map((g) => g.guestGroup).filter(Boolean)));
 
   return (
     <GuestlistConfigForm
@@ -78,6 +80,7 @@ const CreateGuestlistConfig = () => {
       setForm={setForm}
       subEvents={subEvents}
       invitedByList={invitedByList}
+      groupFamily={groupFamily}
       brideFamily={brideFamily}
       groomFamily={groomFamily}
       columnOptions={columnOptions}

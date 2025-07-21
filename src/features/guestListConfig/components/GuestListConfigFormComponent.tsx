@@ -8,6 +8,7 @@ interface Props {
   brideFamily?: string;
   groomFamily?: string;
   invitedByList: string[];
+  groupFamily: string[];
   columnOptions: { label: string; value: string }[];
   onSubmit: (e: React.FormEvent) => void;
   onBack: () => void;
@@ -22,6 +23,7 @@ const GuestlistConfigForm = ({
   groomFamily,
   invitedByList,
   columnOptions,
+  groupFamily,
   onSubmit,
   onBack,
   isEdit = false,
@@ -105,8 +107,9 @@ const GuestlistConfigForm = ({
               className="w-full border border-gray-300 rounded px-3 py-2"
             >
               <option value="">-- No Filter Applied --</option>
-              {brideFamily && <option value={brideFamily}>{brideFamily}</option>}
-              {groomFamily && <option value={groomFamily}>{groomFamily}</option>}
+                {groupFamily?.map((name, idx) => (
+                  <option key={idx} value={name}>{name}</option>
+                ))}
             </select>
           </div>
 

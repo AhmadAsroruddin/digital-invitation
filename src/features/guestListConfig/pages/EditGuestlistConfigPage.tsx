@@ -22,6 +22,7 @@ const EditGuestlistConfig = () => {
   const [form, setForm] = useState<GuestlistConfig | null>(null);
   const [subEvents, setSubEvents] = useState<{ id: number; name: string }[]>([]);
   const [invitedByList, setInvitedByList] = useState<string[]>([]);
+  const [groupFamily, setGroupFamily] = useState<string[]>([]);
   const [brideFamily, setBrideFamily] = useState('');
   const [groomFamily, setGroomFamily] = useState('');
 
@@ -40,7 +41,10 @@ const EditGuestlistConfig = () => {
 
       const guests = await fetchGuestsByEventId(config.eventId);
       const invitedBySet = new Set(guests.map((g) => g.invitedBy).filter(Boolean));
+      const groupFamily = new Set(guests.map((g) => g.guestGroup).filter(Boolean));
+
       setInvitedByList(Array.from(invitedBySet));
+      setGroupFamily(Array.from(groupFamily));
     };
 
     load();
@@ -62,6 +66,7 @@ const EditGuestlistConfig = () => {
       setForm={setForm}
       subEvents={subEvents}
       invitedByList={invitedByList}
+      groupFamily={groupFamily}
       brideFamily={brideFamily}
       groomFamily={groomFamily}
       columnOptions={columnOptions}
